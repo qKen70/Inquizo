@@ -1,0 +1,35 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ quiz.title }}</title>
+</head>
+<body>
+    <header>
+        <h1>{{ quiz.title }}</h1>
+    </header>
+
+    <main>
+        {% if quiz.cover %}
+            <img src="{{ quiz.cover.url }}" alt="Обложка викторины" style="max-width: 200px;">
+        {% else %}
+            <p>Обложка не загружена.</p>
+        {% endif %}
+
+        <p><strong>Описание:</strong> {{ quiz.description }}</p>
+        <p><strong>Автор:</strong> {{ quiz.author.username }}</p>
+        <p><strong>Создано:</strong> {{ quiz.created_at }}</p>
+        <p><strong>Обновлено:</strong> {{ quiz.updated_at }}</p>
+
+        <h2>Вопросы</h2>
+        <ul>
+            {% for question in quiz.questions.all %}
+                <li>{{ question.text }}</li>
+            {% empty %}
+                <li>Пока нет вопросов.</li>
+            {% endfor %}
+        </ul>
+
+        <p><a href="{% url 'quizlist' %}">← Назад к
