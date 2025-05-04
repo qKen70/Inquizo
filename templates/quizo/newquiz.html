@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h1>Создание викторины</h1>
+    <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+        <label for="title">Заголовок</label>
+        {{form.title}}
+        <label for="description">Описание</label>
+        {{form.description}}
+        <label for="images">Картинки</label>
+        {{form.images}}
+        <button type="submit">Сохранить викторину</button>
+    </form>
+
+</div>
+
+{% endblock %}

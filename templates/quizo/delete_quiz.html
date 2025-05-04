@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Удалить викторину "{{ quiz.title }}"?</h1>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'quiz_detail' quiz_id=quiz.id %}">Отмена</a>
+</form>
+{% endblock %}

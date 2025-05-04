@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div>
+    <h1>Редактирование викторины</h1>
+    <form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+        <label for="title">Заголовок</label>
+        {{ form.title }}
+        
+        <label for="description">Описание</label>
+        {{ form.description }}
+        
+        <label for="images">Загрузить новые картинки</label>
+        <input type="file" name="images" multiple>
+
+        <h3>Прикрепленные картинки:</h3>
+        {% for img in quiz_att %}
+            <div>
+                <input type="checkbox" value="{{ img.pk }}" name="attachments">
+                <img src="{{ img.image.url }}" width="300px" alt="Изображение">
+            </div>
+        {% empty %}
+            <p>Пока нет прикрепленных изображений.</p>
+        {% endfor %}
+
+        <button type="submit">Сохранить викторину</button>
+    </form>
+</div>
+
+{% endblock %}

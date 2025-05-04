@@ -14,11 +14,23 @@ class Quiz(models.Model):
         verbose_name_plural = "Викторины"
 
     def save(self, *args, **kwargs):
-        # Убираем изменение поля title на имя файла
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.title
+
+class QuizAttachment(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='attachments', verbose_name="Викторина")
+    file = models.FileField("Файл", upload_to='quiz_attachments/')
+    uploaded_at = models.DateTimeField("Загружено", auto_now_add=True)
+    image = models.ImageField(upload_to='quiz_images/',  blank=True, null=True)
+
+    class Meta:
+        verbose_name = "Файл викторины"
+        verbose_name_plural = "Файлы викторины"
+
+    def __str__(self):
+        return self.file.name
 
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='questions', verbose_name="Викторина")

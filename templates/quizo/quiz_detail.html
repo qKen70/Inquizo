@@ -5,12 +5,38 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ quiz.title }}</title>
+    <style>
+        .action-buttons {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-buttons button {
+            padding: 10px 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .edit-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: #f44336;
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <header>
         <h1>{{ quiz.title }}</h1>
     </header>
-
     <main>
         {% if quiz.cover %}
             <img src="{{ quiz.cover.url }}" alt="Обложка викторины" style="max-width: 200px;">
@@ -32,4 +58,40 @@
             {% endfor %}
         </ul>
 
-        <p><a href="{% url 'quizlist' %}">← Назад к
+        <h2>Прикреплённые изображения</h2>
+        <div>
+            {% for attachment in quiz.attachments.all %}
+                {% if attachment.image %}
+                    <img src="{{ attachment.image.url }}" alt="Картинка викторины" style="max-width: 200px; margin: 10px;">
+                {% endif %}
+            {% empty %}
+                <p>Нет прикреплённых изображений.</p>
+            {% endfor %}
+        </div>
+
+        <h2>Прикреплённые файлы</h2>
+        <ul>
+            {% for attachment in quiz.attachments.all %}
+                {% if attachment.file %}
+                    <li><a href="{{ attachment.file.url }}" download>{{ attachment.file.name }}</a></li>
+                {% endif %}
+            {% empty %}
+                <li>Нет прикреплённых файлов.</li>
+            {% endfor %}
+        </ul>
+
+        <p style="margin-top: 30px;"><a href="{% url 'quizlist' %}">← Назад к списку викторин</a></p>
+    </main>
+
+    <!-- Кнопки в правом нижнем углу -->
+    <div class="action-buttons">
+        <a href="{% url 'edit_quiz' pid=quiz.id %}">
+            <button class="edit-btn">✏️ Редактировать</button>
+        </a>
+        <form action="{% url 'delete_quiz' pid=quiz.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="delete-btn">🗑️ Удалить</button>
+        </form>
+    </div>
+</body>
+</html>
